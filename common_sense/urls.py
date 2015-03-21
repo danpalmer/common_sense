@@ -7,6 +7,9 @@ from consultations import urls as consultations_urls
 
 urlpatterns = patterns(
     '',
+
+    url(r'^admin/', include(admin.site.urls)),
+
     url(r'', include(accounts_urls, namespace='accounts')),
     url(r'', include(consultations_urls, namespace='consultations')),
     url(r'^accounts/', include(allauth_urls)),
