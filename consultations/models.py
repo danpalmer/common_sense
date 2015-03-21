@@ -20,3 +20,18 @@ class Consultation(models.Model):
 
     def __str__(self):
         return "{self.title}: {self.closing_date}".format(self=self)
+
+
+class Topic(models.Model):
+    name = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.name
+
+
+class ConsultationTopic(models.Model):
+    topic = models.ForeignKey(Topic, related_name='consultations')
+    consultation = models.ForeignKey(Consultation, related_name='topics')
+
+    def __str__(self):
+        return "{self.consultation.name}: {self.topic.name}".format(self=self)
