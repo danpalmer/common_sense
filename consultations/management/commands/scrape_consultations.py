@@ -80,21 +80,29 @@ class Command(BaseCommand):
         except:
             summary = ''
 
-        try:
-            contact_email = root.find('dd', class_='email').find('a').text
-        except:
-            contact_email = ''
-
-        try:
-            contact_address = str(root.find('dd', class_='postal-address'))
-            contact_address = contact_address.replace(
-                '<dd class="postal-address">', ''
-            ).replace('<br>', ', ').replace('</br>', '').replace('</dd>', '')
-        except:
-            contact_address = ''
-
+        contact_email = ''
+        contact_address = ''
         response_form = ''
         response_document = ''
+
+        response_formats = root.find('section', id='response-formats')
+        if response_formats:
+            try:
+                contact_email = response_formats.find('dd', class_ = 'email').find('a').text
+            except:
+                pass
+            try:
+                contact_address = '\n'.join(response_formats.find('dd', class_ = 'postal-address').stripped_strings)
+            except:
+                pass
+            try:
+                response_form = response_formats.find(class_='response-form').find('a').attrs['href']
+            except:
+                pass
+            try:
+                response_document = response_formats.find(class_='online').find('a').attrs['href']
+            except:
+                pass
 
         return {
             'url': publication_url,
