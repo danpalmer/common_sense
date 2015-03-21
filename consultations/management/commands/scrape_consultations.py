@@ -65,6 +65,8 @@ class Command(BaseCommand):
         print("  Scraping consultation:", publication['title'])
 
         publication_url = urljoin(base_url, publication['url'])
+        print("    URL:", publication_url)
+
         publication_doc = self.session.get(publication_url)
 
         root = bs4.BeautifulSoup(publication_doc.content)
@@ -72,22 +74,34 @@ class Command(BaseCommand):
         closing_date_str = root.select('.closing-at')[0]['title']
         closing_date = arrow.get(closing_date_str).to('utc').datetime
 
-        summary = root.find(
-            'div', class_='consultation-summary-inner'
-        ).find('p').text
+        try:
+            summary = root.find(
+                'div', class_='consultation-summary-inner'
+            ).find('p').text
+        except:
+            summary = ''
 
-        description = root.findAll(
-            'h1', text=re.compile('Consultation description')
-        )[0].parent.next_sibling.next_sibling.find(
-            'div', class_='govspeak'
-        ).find('p').text
+        try:
+            description = root.findAll(
+                'h1', text=re.compile('Consultation description')
+            )[0].parent.next_sibling.next_sibling.find(
+                'div', class_='govspeak'
+            ).find('p').text
+        except:
+            description = ''
 
-        contact_email = root.find('dd', class_='email').find('a').text
+        try:
+            contact_email = root.find('dd', class_='email').find('a').text
+        except:
+            contact_email = ''
 
-        contact_address = str(root.find('dd', class_='postal-address'))
-        contact_address = contact_address.replace(
-            '<dd class="postal-address">', ''
-        ).replace('<br>', ', ').replace('</br>', '').replace('</dd>', '')
+        try:
+            contact_address = str(root.find('dd', class_='postal-address'))
+            contact_address = contact_address.replace(
+                '<dd class="postal-address">', ''
+            ).replace('<br>', ', ').replace('</br>', '').replace('</dd>', '')
+        except:
+            contact_address = ''
 
         return {
             'url': publication_url,
@@ -95,6 +109,7 @@ class Command(BaseCommand):
             'state': consultation_state,
             'closing_date': closing_date,
             'contact_email': contact_email,
+            'contact_address': contact_address,
             'summary': summary,
             'description': description,
         }
