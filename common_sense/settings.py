@@ -17,7 +17,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
-DEBUG = not 'PRODUCTION' in os.environ
+DEBUG = 'PRODUCTION' not in os.environ
 
 if DEBUG:
     SECRET_KEY = 'b02jzt-$ekg^t!a05obao$m^jxo&6$gc(1td2+jjwyh3oijwx!'
@@ -99,7 +99,7 @@ if DEBUG:
     }
 else:
     import dj_database_url
-    DATABASES['default'] =  dj_database_url.config()
+    DATABASES['default'] = dj_database_url.config()
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
