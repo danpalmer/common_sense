@@ -12,6 +12,8 @@ class Consultation(models.Model):
     url = models.URLField(unique=True, max_length=2048)
     title = models.CharField(max_length=500)
     closing_date = models.DateTimeField()
+    organisation = models.TextField(blank=True)
+    organisation_abbr = models.TextField(blank=True)
 
     summary = models.TextField(blank=True)
 
