@@ -1,3 +1,5 @@
+{% load staticfiles %}
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -6,11 +8,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
 
     <title>{% block title %}Common Sense{% endblock %}</title>
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="{% static "consultations/style.css" %}">
   </head>
 
   <body>
@@ -24,7 +27,7 @@
     </nav>
 
     {% block container %}
-      <div class="container">
+      <div class="container consultations-container">
         {% block content %}
         {% endblock %}
       </div>
