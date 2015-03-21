@@ -1,4 +1,3 @@
-import re
 import bs4
 import arrow
 import requests
@@ -82,15 +81,6 @@ class Command(BaseCommand):
             summary = ''
 
         try:
-            description = root.findAll(
-                'h1', text=re.compile('Consultation description')
-            )[0].parent.next_sibling.next_sibling.find(
-                'div', class_='govspeak'
-            ).find('p').text
-        except:
-            description = ''
-
-        try:
             contact_email = root.find('dd', class_='email').find('a').text
         except:
             contact_email = ''
@@ -111,5 +101,4 @@ class Command(BaseCommand):
             'contact_email': contact_email,
             'contact_address': contact_address,
             'summary': summary,
-            'description': description,
         }

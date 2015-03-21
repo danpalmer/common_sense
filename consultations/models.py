@@ -1,6 +1,9 @@
+import bleach
+
 from django_enumfield import EnumField
 
 from django.db import models
+from django.utils.safestring import mark_safe
 
 from .enums import ConsultationStateEnum
 
@@ -11,7 +14,6 @@ class Consultation(models.Model):
     closing_date = models.DateTimeField()
 
     summary = models.TextField(blank=True)
-    description = models.TextField(blank=True)
 
     contact_email = models.EmailField(blank=True)
     contact_address = models.TextField(blank=True)
@@ -20,6 +22,16 @@ class Consultation(models.Model):
 
     def __str__(self):
         return "{self.title}: {self.closing_date}".format(self=self)
+
+    def cleaned_description(self):
+        print(self.description)
+        return mark_safe(
+            bleach.clean(
+                self.description,
+                tags=('section', 'p', 'a', ),
+                strip=True,
+            ),
+        )
 
 
 class Topic(models.Model):
