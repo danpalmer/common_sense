@@ -1,3 +1,8 @@
-from django.shortcuts import render
+from django.views import generic as views
 
-# Create your views here.
+from .forms import TopicEditForm
+
+
+class TopicEditView(views.FormView):
+    form_class = TopicEditForm
+    template_name = 'accounts/topics.html'
