@@ -1,3 +1,10 @@
 from django.contrib import admin
 
-# Register your models here.
+from votes.models import Vote
+
+
+class VoteAdmin(admin.ModelAdmin):
+    pass
+
+
+admin.site.register(Vote, VoteAdmin)
