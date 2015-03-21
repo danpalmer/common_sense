@@ -10,7 +10,7 @@ from .enums import ConsultationStateEnum
 
 class Consultation(models.Model):
     url = models.URLField(unique=True)
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=500)
     closing_date = models.DateTimeField()
 
     summary = models.TextField(blank=True)
