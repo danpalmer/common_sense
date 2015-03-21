@@ -69,8 +69,11 @@ class Command(BaseCommand):
         print("    URL:", publication_url)
 
         root = bs4.BeautifulSoup(publication['organisations']).find('abbr')
-        organisation = root.attrs['title']
-        organisation_abbr = root.text
+        try:
+            organisation = root.attrs['title']
+            organisation_abbr = root.text
+        except:
+            pass
 
         root = bs4.BeautifulSoup(self.session.get(publication_url).content)
 
