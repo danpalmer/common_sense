@@ -26,7 +26,7 @@ else:
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['commonsense.herokuapp.com']
 
 
 TEMPLATE_CONTEXT_PROCESSORS = (
