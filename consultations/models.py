@@ -1,3 +1,4 @@
+from datetime import datetime
 import bleach
 
 from django_enumfield import EnumField
@@ -12,6 +13,7 @@ class Consultation(models.Model):
     url = models.URLField(unique=True, max_length=2048)
     title = models.CharField(max_length=500)
     closing_date = models.DateTimeField()
+    last_update = models.DateTimeField(default=datetime.now)
     organisation = models.TextField(blank=True)
     organisation_abbr = models.TextField(blank=True)
 
