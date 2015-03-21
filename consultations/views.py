@@ -21,9 +21,9 @@ class HomePageView(views.TemplateView):
         }
 
         context.update({
-            'open': consultations[ConsultationStateEnum.OPEN],
-            'closed': consultations[ConsultationStateEnum.CLOSED],
-            'finished': consultations[ConsultationStateEnum.OUTCOME],
+            'open': consultations.get(ConsultationStateEnum.OPEN, 0),
+            'closed': consultations.get(ConsultationStateEnum.CLOSED, 0),
+            'finished': consultations.get(ConsultationStateEnum.OUTCOME, 0),
         })
 
         return context
