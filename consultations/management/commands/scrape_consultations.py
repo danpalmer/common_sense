@@ -15,6 +15,13 @@ class Command(BaseCommand):
     session = requests.Session()
 
     def handle(self, *args, **options):
+        for consultation in self.get_consultations():
+            Consultation.objects.get_or_create(
+                url=consultation['url'],
+                defaults=consultation,
+            )
+
+    def get_consultations(self):
         total_pages = 1
         current_page = 1
 
@@ -38,13 +45,8 @@ class Command(BaseCommand):
                     response.url,
                 )
 
-                if not consultation_data:
-                    continue
-
-                consultation, created = Consultation.objects.get_or_create(
-                    url=consultation_data['url'],
-                    defaults=consultation_data,
-                )
+                if consultation_data:
+                    yield consultation_data
 
             current_page += 1
             total_pages = data['total_pages']
