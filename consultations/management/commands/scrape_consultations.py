@@ -68,9 +68,11 @@ class Command(BaseCommand):
         publication_url = urljoin(base_url, publication['url'])
         print("    URL:", publication_url)
 
-        publication_doc = self.session.get(publication_url)
+        root = bs4.BeautifulSoup(publication['organisations']).find('abbr')
+        organisation = root.attrs['title']
+        organisation_abbr = root.text
 
-        root = bs4.BeautifulSoup(publication_doc.content)
+        root = bs4.BeautifulSoup(self.session.get(publication_url).content)
 
         closing_date_str = root.select('.closing-at')[0]['title']
         closing_date = arrow.get(closing_date_str).to('utc').datetime
@@ -121,6 +123,9 @@ class Command(BaseCommand):
             'title': publication['title'],
             'state': consultation_state,
             'closing_date': closing_date,
+            'last_update': arrow.get(publication['public_timestamp']).to('utc').datetime,
+            'organisation': organisation,
+            'organisation_abbr': organisation_abbr,
             'contact_email': contact_email,
             'contact_address': contact_address,
             'summary': summary,
