@@ -17,6 +17,8 @@ class Consultation(models.Model):
 
     contact_email = models.EmailField(blank=True)
     contact_address = models.TextField(blank=True)
+    response_form = models.URLField(blank=True)
+    response_document = models.URLField(blank=True)
 
     state = EnumField(ConsultationStateEnum)
 
