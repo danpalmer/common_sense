@@ -99,7 +99,9 @@ if DEBUG:
     }
 else:
     import dj_database_url
-    DATABASES['default'] = dj_database_url.config()
+    DATABASES = {
+        'defaults': dj_database_url.config(),
+    }
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
