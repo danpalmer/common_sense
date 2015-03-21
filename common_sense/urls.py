@@ -12,5 +12,6 @@ urlpatterns = patterns(
 
     url(r'', include(accounts_urls, namespace='accounts')),
     url(r'', include(consultations_urls, namespace='consultations')),
+
     url(r'^accounts/', include(allauth_urls)),
 )
