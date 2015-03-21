@@ -1,1 +1,1 @@
-web: gunicorn common_sense/wsgi.py --log-file -
+web: gunicorn common_sense.wsgi:application --log-file -
