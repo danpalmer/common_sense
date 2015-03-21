@@ -130,10 +130,10 @@ MESSAGE_TAGS = {
 }
 
 try:
-    EMAIL_HOST=os.environ['MAILGUN_SMTP_HOST']
-    EMAIL_PORT=587
-    EMAIL_HOST_USER=os.environ['MAILGUN_SMTP_USER']
-    EMAIL_HOST_PASSWORD=os.environ['MAILGUN_SMTP_PASSWORD']
-    EMAIL_USE_TLS=True
+    EMAIL_HOST = os.environ['MAILGUN_SMTP_HOST']
+    EMAIL_PORT = 587
+    EMAIL_HOST_USER = os.environ['MAILGUN_SMTP_USER']
+    EMAIL_HOST_PASSWORD = os.environ['MAILGUN_SMTP_PASSWORD']
+    EMAIL_USE_TLS = True
 except KeyError:
     pass
