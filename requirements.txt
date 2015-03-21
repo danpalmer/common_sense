@@ -1,3 +1,4 @@
 django==1.7.7
+pytz
 https://github.com/danpalmer/django-enumfield/archive/master.tar.gz
 arrow
