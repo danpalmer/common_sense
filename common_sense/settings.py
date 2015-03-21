@@ -23,6 +23,7 @@ if DEBUG:
     SECRET_KEY = 'b02jzt-$ekg^t!a05obao$m^jxo&6$gc(1td2+jjwyh3oijwx!'
 else:
     SECRET_KEY = os.environ['SECRET_KEY']
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 TEMPLATE_DEBUG = True
 
