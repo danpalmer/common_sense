@@ -63,11 +63,11 @@ INSTALLED_APPS = (
     # The Django sites framework is required for allauth.
     'django.contrib.sites',
 
+    'accounts', # shadow allauth
     'allauth',
     'allauth.account',
 
     'consultations',
-    'accounts',
 )
 
 MIDDLEWARE_CLASSES = (
