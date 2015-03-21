@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Consultation
+from .models import Consultation, Topic
 
 
 class ConsultationAdmin(admin.ModelAdmin):
@@ -8,4 +8,9 @@ class ConsultationAdmin(admin.ModelAdmin):
     date_hierarchy = 'closing_date'
 
 
+class TopicAdmin(admin.ModelAdmin):
+    pass
+
+
 admin.site.register(Consultation, ConsultationAdmin)
+admin.site.register(Topic, TopicAdmin)
