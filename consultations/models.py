@@ -13,7 +13,8 @@ class Consultation(models.Model):
     summary = models.TextField(blank=True)
     description = models.TextField(blank=True)
 
-    contact_email = models.EmailField()
+    contact_email = models.EmailField(blank=True)
+    contact_address = models.TextField(blank=True)
 
     state = EnumField(ConsultationStateEnum)
 
