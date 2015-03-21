@@ -1,5 +1,16 @@
 {% extends "consultations/base.html" %}
 
 {% block content %}
-	<h1>{{ object.title }}</h1>
+	<div class="page-header">
+		<h1>{{ object.title }}</h1>
+		<p class="lead">{{ object.summary }}</p>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<a href="{{ object.url }}" class="btn btn-default">View on GOV.UK &rarr;</a>
+		</div>
+		<div class="col-xs-12">
+			<p>{{ object.description|linebreaks }}</p>
+		</div>
+	</div>
 {% endblock %}
