@@ -100,7 +100,7 @@ if DEBUG:
 else:
     import dj_database_url
     DATABASES = {
-        'defaults': dj_database_url.config(),
+        'default': dj_database_url.config(),
     }
 
 # Internationalization
