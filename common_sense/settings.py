@@ -17,11 +17,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'b02jzt-$ekg^t!a05obao$m^jxo&6$gc(1td2+jjwyh3oijwx!'
+DEBUG = not 'PRODUCTION' in os.environ
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+if DEBUG:
+    SECRET_KEY = 'b02jzt-$ekg^t!a05obao$m^jxo&6$gc(1td2+jjwyh3oijwx!'
+else:
+    SECRET_KEY = os.environ['SECRET_KEY']
 
 TEMPLATE_DEBUG = True
 
@@ -89,12 +90,16 @@ WSGI_APPLICATION = 'common_sense.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
     }
-}
+else:
+    import dj_database_url
+    DATABASES['default'] =  dj_database_url.config()
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
