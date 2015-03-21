@@ -8,8 +8,12 @@ from .enums import ConsultationStateEnum
 class Consultation(models.Model):
     url = models.URLField(unique=True)
     title = models.CharField(max_length=200)
-    description = models.TextField(blank=True)
     closing_date = models.DateTimeField()
+
+    summary = models.TextField(blank=True)
+    description = models.TextField(blank=True)
+
+    contact_email = models.EmailField()
 
     state = EnumField(ConsultationStateEnum)
 
