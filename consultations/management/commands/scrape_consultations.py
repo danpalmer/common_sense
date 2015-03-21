@@ -103,6 +103,16 @@ class Command(BaseCommand):
                 response_document = response_formats.find(class_='online').find('a').attrs['href']
             except:
                 pass
+        # Try dealing with malformed documents
+        else:
+            try:
+                contact_email = root.find(text = re.compile(r'By email:')).parent.find(href = re.compile(r'mailto:')).text
+            except:
+                pass
+            try:
+                contact_address = '\n'.join(root.find(class_='address').stripped_strings)
+            except:
+                pass
 
         return {
             'url': publication_url,
