@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
@@ -119,3 +120,12 @@ from django.contrib import messages
 MESSAGE_TAGS = {
     messages.ERROR: 'danger',
 }
+
+try:
+    EMAIL_HOST=os.environ['MAILGUN_SMTP_HOST']
+    EMAIL_PORT=587
+    EMAIL_HOST_USER=os.environ['MAILGUN_SMTP_USER']
+    EMAIL_HOST_PASSWORD=os.environ['MAILGUN_SMTP_PASSWORD']
+    EMAIL_USE_TLS=True
+except KeyError:
+    pass
