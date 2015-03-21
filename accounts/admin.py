@@ -1,3 +1,10 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import UserTopic
+
+
+class UserTopicAdmin(admin.ModelAdmin):
+    pass
+
+
+admin.site.register(UserTopic, UserTopicAdmin)
