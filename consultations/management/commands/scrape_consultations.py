@@ -93,6 +93,9 @@ class Command(BaseCommand):
         except:
             contact_address = ''
 
+        response_form = ''
+        response_document = ''
+
         return {
             'url': publication_url,
             'title': publication['title'],
@@ -101,4 +104,6 @@ class Command(BaseCommand):
             'contact_email': contact_email,
             'contact_address': contact_address,
             'summary': summary,
+            'response_form': response_form,
+            'response_document': response_document,
         }
