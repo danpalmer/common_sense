@@ -1,5 +1,3 @@
-{% load staticfiles %}
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -12,8 +10,6 @@
     <title>{% block title %}Common Sense{% endblock %}</title>
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
-
-    <link rel="stylesheet" type="text/css" href="{% static "consultations/style.css" %}">
   </head>
 
   <body>
@@ -40,7 +36,7 @@
     </nav>
 
     {% block container %}
-      <div class="container consultations-container">
+      <div class="container consultations-container" style="margin-top: 60px;">
         {% for message in messages %}
           <div class="alert alert-{{ message.tags }}">{{ message }}</div>
         {% endfor %}
