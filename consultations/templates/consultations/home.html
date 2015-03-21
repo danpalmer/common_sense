@@ -2,8 +2,25 @@
 
 {% block content %}
 	<div class="row">
-		<div class="jumbotron">
-			<h1>Hello world</h1>
+		<div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12">
+			<div class="row">
+				<div class="col-xs-12">
+					<h3><a href="{% url "consultations:list" %}">Consultations</a></h3>
+					<hr>
+				</div>
+				<div class="col-xs-4">
+					<h1>{{ open }}</h1>
+					<h4>Open</h4>
+				</div>
+				<div class="col-xs-4">
+					<h1>{{ closed }}</h1>
+					<h4>Closed</h4>
+				</div>
+				<div class="col-xs-4">
+					<h1>{{ finished }}</h1>
+					<h4>Finished</h4>
+				</div>
+			</div>
 		</div>
 	</div>
 {% endblock %}
