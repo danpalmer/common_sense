@@ -17,9 +17,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
-DEBUG = 'PRODUCTION' not in os.environ
+PRODUCTION = 'PRODUCTION' in os.environ
+DEBUG = 'DEBUG_OFF' not in os.environ
 
-if DEBUG:
+if not PRODUCTION:
     SECRET_KEY = 'b02jzt-$ekg^t!a05obao$m^jxo&6$gc(1td2+jjwyh3oijwx!'
 else:
     SECRET_KEY = os.environ['SECRET_KEY']
@@ -91,7 +92,7 @@ WSGI_APPLICATION = 'common_sense.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
-if DEBUG:
+if not PRODUCTION:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
