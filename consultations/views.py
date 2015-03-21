@@ -8,4 +8,7 @@ class HomePageView(views.TemplateView):
 
 
 class ConsultationsListView(views.ListView):
+    queryset = Consultation.objects.order_by('state', 'closing_date')
+
+class ConsultationView(views.DetailView):
     model = Consultation

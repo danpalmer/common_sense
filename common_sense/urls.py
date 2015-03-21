@@ -9,6 +9,6 @@ urlpatterns = patterns(
 
     url(r'^admin/', include(admin.site.urls)),
 
-    url(r'', include(accounts_urls)),
-    url(r'', include(consultations_urls)),
+    url(r'', include(accounts_urls, namespace='accounts')),
+    url(r'', include(consultations_urls, namespace='consultations')),
 )
