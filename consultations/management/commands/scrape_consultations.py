@@ -73,7 +73,7 @@ class Command(BaseCommand):
             organisation = root.attrs['title']
             organisation_abbr = root.text
         except:
-            pass
+            organisation = ''
 
         root = bs4.BeautifulSoup(self.session.get(publication_url).content)
 
