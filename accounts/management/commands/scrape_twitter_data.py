@@ -60,7 +60,7 @@ class Command(BaseCommand):
                     len(re.findall(r'(i.imgur.com/+)', url)) == 0 and
                     len(re.findall(r'\.(jpg|png|ogg)$', url)) == 0
                 ):
-                    response = requests.get(url)
+                    response = self.session.get(url)
                     if response.status_code == 200:
                         print(response.url)
                         url_contents.append(response.text)
