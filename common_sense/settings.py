@@ -173,3 +173,5 @@ LOGGING = {
         'level': 'INFO',
     },
 }
+
+ACCOUNT_EMAIL_REQUIRED = True
