@@ -1,7 +1,6 @@
 suppressPackageStartupMessages(require(httr))
 suppressPackageStartupMessages(require(RPostgreSQL))
 suppressPackageStartupMessages(require(tm))
-suppressPackageStartupMessages(require(yaml))
 
 connect_to_db = function(db_url) {
     config = parse_url(db_url)
