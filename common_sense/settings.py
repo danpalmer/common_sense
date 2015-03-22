@@ -70,6 +70,9 @@ INSTALLED_APPS = (
     'accounts', # shadow allauth
     'allauth',
     'allauth.account',
+    'allauth.socialaccount',
+
+    'allauth.socialaccount.providers.twitter',
 
     'consultations',
 )
@@ -165,10 +168,8 @@ LOGGING = {
             'formatter': 'verbose'
         }
     },
-    'loggers': {
-        'testlogger': {
-            'handlers': ['console'],
-            'level': 'INFO',
-        }
-    }
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
 }

@@ -10,4 +10,23 @@
 			<a href="{{ object.url }}" class="btn btn-default">View on GOV.UK &rarr;</a>
 		</div>
 	</div>
+	<div class="row">
+		<h2>Feedback</h2>
+		<div class="col-xs-12" id="disqus_thread"></div>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+	</div>
+{% endblock %}
+
+{% block javascript %}
+  <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES * * */
+      var disqus_shortname = 'commonsenseapp';
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
 {% endblock %}

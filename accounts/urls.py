@@ -6,5 +6,5 @@ from . import views
 urlpatterns = patterns(
     '',
 
-    url(r'^account/profile', views.ProfileEditView.as_view(), name='profile'),
+    url(r'^accounts/profile', views.ProfileEditView.as_view(), name='profile'),
 )

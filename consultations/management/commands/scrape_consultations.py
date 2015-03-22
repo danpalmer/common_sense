@@ -1,3 +1,4 @@
+import io
 import re
 import bs4
 import arrow
@@ -28,7 +29,8 @@ class Command(BaseCommand):
     session = requests.Session()
 
     def handle(self, *args, **options):
-        for consultation in self.get_consultations():
+        get_documents = options.get('get_documents')
+        for consultation in self.get_consultations(get_documents):
             Consultation.objects.get_or_create(
                 url=consultation['url'],
                 defaults=consultation,
@@ -158,6 +160,8 @@ class Command(BaseCommand):
                     'section', class_='attachment',
                 )
 
+                document_raw_text = ""
+
                 for document in documents:
                     document_type = document.find(
                         'p', class_='metadata',
@@ -180,12 +184,13 @@ class Command(BaseCommand):
                     print("        URL:", document_url)
 
                     if document_type == 'PDF':
-                        document_raw_text = pdf_to_text(
-                            self.session.get(document_url).content,
-                        )
-                    else:
-                        document_raw_text = ""
+                        try:
+                            content = self.session.get(document_url).content
+                            with io.BytesIO(content) as pdf_file:
+                                document_raw_text += pdf_to_text(pdf_file)
+                        except ValueError:
+                            print("Invalid PDF")
 
-            pub['raw_text'] = document_raw_text
+                pub['raw_text'] = document_raw_text
 
         return pub
