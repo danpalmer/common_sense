@@ -1,13 +1,9 @@
 import re
 import bs4
 import arrow
-import codecs
 import requests
 
-from os import makedirs, path
-from csv import DictWriter
 from optparse import make_option
-from subprocess import call, DEVNULL, STDOUT
 from urllib.parse import urljoin
 
 from django.core.management.base import BaseCommand
@@ -32,24 +28,11 @@ class Command(BaseCommand):
     session = requests.Session()
 
     def handle(self, *args, **options):
-        if options['get_documents']:
-            makedirs('pdfs', exist_ok=True)
-            makedirs('txts', exist_ok=True)
-            fieldnames = ['url', 'title', 'state', 'closing_date',
-                          'last_update', 'organisation', 'organisation_abbr',
-                          'contact_email', 'contact_address', 'summary',
-                          'response_form', 'response_document', 'raw_text']
-            with open('consultations.csv', 'w', newline='') as csvfile:
-                w = DictWriter(csvfile, fieldnames)
-                for entry in self.get_consultations(get_documents=True):
-                    w.writerow(entry)
-                    csvfile.flush()
-        else:
-            for consultation in self.get_consultations():
-                Consultation.objects.get_or_create(
-                    url=consultation['url'],
-                    defaults=consultation,
-                )
+        for consultation in self.get_consultations():
+            Consultation.objects.get_or_create(
+                url=consultation['url'],
+                defaults=consultation,
+            )
 
     def get_consultations(self, get_documents=False):
         total_pages = 1
