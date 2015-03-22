@@ -9,6 +9,8 @@ from django.core.management.base import BaseCommand
 
 from allauth.socialaccount.models import SocialApp
 
+from accounts.models import UserTwitterData
+
 
 class Command(BaseCommand):
 
@@ -42,34 +44,43 @@ class Command(BaseCommand):
         # Status links
         links = [re.findall(r'(https?://[^\s]+)', row) for row in out]
         links = strip_links(links)
-        interesting_links = []
-        link_html = []
-        for link in links:
+
+        urls = []
+        for status in statuses:
+            for url in status.entities['urls']:
+                urls.append(url['expanded_url'])
+
+        url_contents = []
+        for url in urls:
             try:
                 if (
-                    len(re.findall(r'(twitter.com/+)', link)) == 0 and
-                    len(re.findall(r'(swarmapp.com/+)', link)) == 0 and
-                    len(re.findall(r'(instagram.com/+)', link)) == 0 and
-                    len(re.findall(r'(i.imgur.com/+)', link)) == 0
+                    len(re.findall(r'(twitter.com/+)', url)) == 0 and
+                    len(re.findall(r'(swarmapp.com/+)', url)) == 0 and
+                    len(re.findall(r'(instagram.com/+)', url)) == 0 and
+                    len(re.findall(r'(i.imgur.com/+)', url)) == 0 and
+                    len(re.findall(r'\.(jpg|png|ogg)$', url)) == 0
                 ):
-                    response = requests.get(link)
+                    response = requests.get(url)
                     if response.status_code == 200:
                         print(response.url)
-                        
-                        interesting_links.append(response.url)
-                        link_html.append(response.text)
+                        url_contents.append(response.text)
             except Exception:
                 pass
 
         raw_text = ' '.join(out).replace('\'', '').replace('#', '')
-        for this_page in link_html:
+        for this_page in url_contents:
             soup = BeautifulSoup(this_page)
             texts = soup.findAll(text=True)
             visible_texts = list(filter(visible, texts))
             text = ' '.join(visible_texts).replace('\n', '').replace('\t', '')
             raw_text = raw_text + ' ' + text
 
-        user.twitter_data.create(data=raw_text)
+        raw_text = re.sub(r'@\w+', '', raw_text)
+
+        UserTwitterData.objects.create(
+            user=user,
+            data=raw_text,
+        )
 
 
 # Turns [[1, 2], [3]] into [1, 2, 3]
