@@ -34,7 +34,7 @@ class Command(BaseCommand):
 
         auth.set_access_token(twitter_token.token, twitter_token.token_secret)
         api = tweepy.API(auth)
-        statuses = api.user_timeline(id=twitter_handle, count=100)
+        statuses = api.user_timeline(id=twitter_handle, count=300)
 
         # Status text
         out = []
