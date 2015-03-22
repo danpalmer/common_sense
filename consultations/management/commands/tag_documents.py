@@ -11,7 +11,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         with io.String() as stdout:
-            subprocess.call("tag_documents.R", stdout=stdout)
+            subprocess.call("Rscript topics/tag_consultations.R", stdout=stdout)
             csv_reader = csv.reader(stdout)
             for consultation_id, tags in csv_reader:
                 consultation = Consultation.objects.get(pk=consultation_id)
