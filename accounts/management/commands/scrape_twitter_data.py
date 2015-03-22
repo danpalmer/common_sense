@@ -46,15 +46,16 @@ class Command(BaseCommand):
         link_html = []
         for link in links:
             try:
-                response = requests.get(link)
-                if response.status_code == 200:
-                    print(response.url)
-                    if (
-                        len(re.findall(r'(twitter.com/+)', response.url)) == 0 and
-                        len(re.findall(r'(swarmapp.com/+)', response.url)) == 0 and
-                        len(re.findall(r'(instagram.com/+)', response.url)) == 0 and
-                        len(re.findall(r'(i.imgur.com/+)', response.url)) == 0
-                    ):
+                if (
+                    len(re.findall(r'(twitter.com/+)', link)) == 0 and
+                    len(re.findall(r'(swarmapp.com/+)', link)) == 0 and
+                    len(re.findall(r'(instagram.com/+)', link)) == 0 and
+                    len(re.findall(r'(i.imgur.com/+)', link)) == 0
+                ):
+                    response = requests.get(link)
+                    if response.status_code == 200:
+                        print(response.url)
+                        
                         interesting_links.append(response.url)
                         link_html.append(response.text)
             except Exception:
