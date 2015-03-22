@@ -14,6 +14,7 @@ from django.core.management.base import BaseCommand
 
 from consultations.models import Consultation
 from consultations.enums import ConsultationStateEnum
+from consultations.pdfutils import pdf_to_text
 
 
 class Command(BaseCommand):
@@ -168,7 +169,6 @@ class Command(BaseCommand):
         }
 
         if get_documents:
-            document_raw_text = ""
             # Let's go look at the related documents
             documents = root.find('h1', text = re.compile(r'Documents'))
             if documents:
@@ -181,19 +181,12 @@ class Command(BaseCommand):
                     print("        URL:", document_url)
 
                     if document_type == 'PDF':
-                        pdf_filename = path.join('pdfs', document_name + '.pdf')
-                        txt_filename = path.join('txts', document_name + '.txt')
-                        if not path.exists(pdf_filename):
-                            with open(pdf_filename, 'wb') as pdf:
-                                pdf.write(self.session.get(document_url).content)
-                        command = "pdf2txt.py -t text -o '" + txt_filename + "' '" + pdf_filename + "'"
-                        call([command], shell=True, stdout=DEVNULL, stderr=STDOUT)
-                        with codecs.open(txt_filename,'r', encoding='utf8') as f:
-                            text = f.read()
+                        document_raw_text = pdf_to_text(
+                            self.session.get(document_url).content),
+                        )
                     else:
-                        text = ""
+                        document_raw_text = ""
 
-                    document_raw_text = document_raw_text + " " + text
             pub['raw_text'] = document_raw_text
 
         return pub
