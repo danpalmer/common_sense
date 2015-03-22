@@ -169,20 +169,36 @@ class Command(BaseCommand):
         }
 
         if get_documents:
-            # Let's go look at the related documents
-            documents = root.find('h1', text = re.compile(r'Documents'))
+            documents = root.find('h1', text=re.compile(r'Documents'))
             if documents:
-                documents = documents.parent.parent.findAll('section', class_ = 'attachment')
+                documents = documents.parent.parent.findAll(
+                    'section', class_='attachment',
+                )
+
                 for document in documents:
-                    document_type = document.find('p', class_ = 'metadata').find('span', class_ = 'type').text
-                    document_url = urljoin(base_url, document.find('h2', class_ = 'title').find('a').attrs['href'])
-                    document_name = document.find('h2', class_ = 'title').find('a').text
+                    document_type = document.find(
+                        'p', class_='metadata',
+                    ).find(
+                        'span', class_='type'
+                    ).text
+
+                    document_url = urljoin(
+                        base_url,
+                        document.find(
+                            'h2', class_='title',
+                        ).find('a').attrs['href']
+                    )
+
+                    document_name = document.find(
+                        'h2', class_='title',
+                    ).find('a').text
+
                     print("      Scraping document:", document_name)
                     print("        URL:", document_url)
 
                     if document_type == 'PDF':
                         document_raw_text = pdf_to_text(
-                            self.session.get(document_url).content),
+                            self.session.get(document_url).content,
                         )
                     else:
                         document_raw_text = ""
