@@ -1,23 +1,14 @@
-source('~/.tag_helpers.R')
+source('./tag_helpers.R')
 
-db_conn = connect_to_db()
-query = "SELECT * FROM consultations_consultation LIMIT 10"
+db_url = Sys.getenv('DATABASE_URL')
+db_conn = connect_to_db(db_url)
+query = "SELECT user_id, data FROM accounts_usertwitterdata"
 results = dbFetch(dbSendQuery(db_conn, query), n = -1)
 
-
-# Path to folder containing text files
-dir_path = "./twitterati"
-filenames = DirSource(dir_path)$filelist
-filenames = gsub(dir_path, "", filenames)
-filenames = gsub("/", "@", filenames)
-filenames = gsub(".txt", "", filenames)
-
-
 # Generate our TDM, convert to matrix
-doc.tdm = get.tdm(d$text)
+doc.tdm = get.tdm(results$data)
 doc.matrix = as.matrix(doc.tdm)
 rownames(doc.matrix) = clean_string(rownames(doc.matrix))
-
 
 # Term counts, frequency, occurrence, density...
 doc.counts = rowSums(doc.matrix) # how many docs is each word in?
@@ -37,7 +28,7 @@ doc.df = transform(doc.df, density = doc.density, occurrence = doc.occurrence)
 
 
 # Identify representative keywords for user
-tag_df = data.frame(title = filenames, tags = NA)
+tag_df = data.frame(title = results$user_id, tags = NA)
 for (j in 1:ncol(doc.matrix)) {
     print(j)
     doc = doc.matrix[, j]
@@ -64,4 +55,4 @@ for (j in 1:ncol(doc.matrix)) {
     tag_df$tags[j] = tag_list
 }
 
-write.csv(tag_df, 'twitter_tags.csv')
+out = write.table(tag_df, sep=",", row.names=F)

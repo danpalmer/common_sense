@@ -2,7 +2,7 @@ source('./tag_helpers.R')
 
 db_url = Sys.getenv('DATABASE_URL')
 db_conn = connect_to_db(db_url)
-query = "SELECT id, title, summary, organisation, raw_text FROM consultations_consultation LIMIT 10"
+query = "SELECT id, title, summary, organisation, raw_text FROM consultations_consultation"
 results = dbFetch(dbSendQuery(db_conn, query), n = -1)
 
 # Read in the data, concatenate all text fields into one; cleaning
