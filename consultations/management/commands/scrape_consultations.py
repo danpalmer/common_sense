@@ -2,6 +2,12 @@ import bs4
 import arrow
 import requests
 
+import codecs
+from csv import DictWriter
+from optparse import make_option
+from os import devnull, makedirs, path
+import re
+from subprocess import call, DEVNULL, STDOUT
 from urllib.parse import urljoin
 
 from django.core.management.base import BaseCommand
@@ -12,16 +18,33 @@ from consultations.enums import ConsultationStateEnum
 
 class Command(BaseCommand):
 
+    option_list = BaseCommand.option_list + (
+        make_option('--get-documents', action='store_true', default=False,
+                    dest='get_documents', help='Get documents'),
+        )
     session = requests.Session()
 
     def handle(self, *args, **options):
-        for consultation in self.get_consultations():
-            Consultation.objects.get_or_create(
-                url=consultation['url'],
-                defaults=consultation,
-            )
+        if options['get_documents']:
+            makedirs('pdfs', exist_ok=True)
+            makedirs('txts', exist_ok=True)
+            fieldnames = ['url', 'title', 'state', 'closing_date',
+                          'last_update', 'organisation', 'organisation_abbr',
+                          'contact_email', 'contact_address', 'summary',
+                          'response_form', 'response_document', 'raw_text']
+            with open('consultations.csv', 'w', newline='') as csvfile:
+                w = DictWriter(csvfile, fieldnames)
+                for entry in self.get_consultations(get_documents=True):
+                    w.writerow(entry)
+                    csvfile.flush()
+        else:
+            for consultation in self.get_consultations():
+                Consultation.objects.get_or_create(
+                    url=consultation['url'],
+                    defaults=consultation,
+                )
 
-    def get_consultations(self):
+    def get_consultations(self, get_documents=False):
         total_pages = 1
         current_page = 1
 
@@ -43,6 +66,7 @@ class Command(BaseCommand):
                 consultation_data = self.parse_publication(
                     publication,
                     response.url,
+                    get_documents=get_documents,
                 )
 
                 if consultation_data:
@@ -51,7 +75,7 @@ class Command(BaseCommand):
             current_page += 1
             total_pages = data['total_pages']
 
-    def parse_publication(self, publication, base_url):
+    def parse_publication(self, publication, base_url, get_documents=False):
         if publication['type'] != 'consultation':
             return None
 
@@ -122,7 +146,7 @@ class Command(BaseCommand):
             except:
                 pass
 
-        return {
+        pub = {
             'url': publication_url,
             'title': publication['title'],
             'state': consultation_state,
@@ -136,3 +160,34 @@ class Command(BaseCommand):
             'response_form': response_form,
             'response_document': response_document,
         }
+
+        if get_documents:
+            document_raw_text = ""
+            # Let's go look at the related documents
+            documents = root.find('h1', text = re.compile(r'Documents'))
+            if documents:
+                documents = documents.parent.parent.findAll('section', class_ = 'attachment')
+                for document in documents:
+                    document_type = document.find('p', class_ = 'metadata').find('span', class_ = 'type').text
+                    document_url = urljoin(base_url, document.find('h2', class_ = 'title').find('a').attrs['href'])
+                    document_name = document.find('h2', class_ = 'title').find('a').text
+                    print("      Scraping document:", document_name)
+                    print("        URL:", document_url)
+
+                    if document_type == 'PDF':
+                        pdf_filename = path.join('pdfs', document_name + '.pdf')
+                        txt_filename = path.join('txts', document_name + '.txt')
+                        if not path.exists(pdf_filename):
+                            with open(pdf_filename, 'wb') as pdf:
+                                pdf.write(self.session.get(document_url).content)
+                        command = "pdf2txt.py -t text -o '" + txt_filename + "' '" + pdf_filename + "'"
+                        call([command], shell=True, stdout=DEVNULL, stderr=STDOUT)
+                        with codecs.open(txt_filename,'r', encoding='utf8') as f:
+                            text = f.read()
+                    else:
+                        text = ""
+
+                    document_raw_text = document_raw_text + " " + text
+            pub['raw_text'] = document_raw_text
+
+        return pub
