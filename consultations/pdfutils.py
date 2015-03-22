@@ -1,6 +1,8 @@
 import io
 
 from pdfminer.layout import LAParams
+from pdfminer.psparser import PSEOF
+from pdfminer.pdfparser import PDFEncryptionError
 from pdfminer.pdfinterp import PDFResourceManager, process_pdf
 from pdfminer.converter import TextConverter
 
@@ -14,18 +16,23 @@ def pdf_to_text(pdf_file):
 
     rsrcmgr = PDFResourceManager(caching=caching)
 
-    output = io.StringIO()
-    out_device = TextConverter(rsrcmgr, output, laparams=laparams)
+    with io.StringIO() as output:
+        out_device = TextConverter(rsrcmgr, output, laparams=laparams)
 
-    process_pdf(
-        rsrcmgr,
-        out_device,
-        pdf_file,
-        pagenos,
-        maxpages=maxpages,
-        password=password,
-        caching=caching,
-        check_extractable=True,
-    )
+        try:
+            process_pdf(
+                rsrcmgr,
+                out_device,
+                pdf_file,
+                pagenos,
+                maxpages=maxpages,
+                password=password,
+                caching=caching,
+                check_extractable=True,
+            )
+        except PSEOF:
+            raise ValueError("Invalid PDF")
+        except PDFEncryptionError:
+            raise ValueError("Bad encryption")
 
-    return out_device.getvalue()
+        return output.getvalue()

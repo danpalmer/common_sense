@@ -24,6 +24,8 @@ class Consultation(models.Model):
     response_form = models.URLField(blank=True)
     response_document = models.URLField(blank=True)
 
+    raw_text = models.TextField(blank=True)
+
     state = EnumField(ConsultationStateEnum)
 
     def __str__(self):
