@@ -7,18 +7,30 @@ from bs4 import BeautifulSoup
 from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
 
+from allauth.socialaccount.models import SocialApp
+
 
 class Command(BaseCommand):
 
     session = requests.Session()
 
     def handle(self, *args, **options):
-        for user in User.objects.filter(twitter_data__isnull=True):
+        for user in User.objects.filter(
+            twitter_data__isnull=True,
+            socialaccount__isnull=False,
+        ):
             self.scrape(user)
 
     def scrape(self, user):
-        auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-        auth.set_access_token(access_token, access_token_secret)
+        twitter_account = user.socialaccount_set.all()[0]
+        twitter_handle = twitter_account.extra_data['screen_name']
+        twitter_token = twitter_account.socialtoken_set.all()[0]
+
+        twitter = SocialApp.objects.all().first()
+
+        auth = tweepy.OAuthHandler(twitter.client_id, twitter.secret)
+
+        auth.set_access_token(twitter_token.token, twitter_token.token_secret)
         api = tweepy.API(auth)
         statuses = api.user_timeline(id=twitter_handle, count=100)
 
@@ -80,11 +92,3 @@ def visible(element):
     elif re.match('<!--.*-->', str(element)):
         return False
     return True
-
-# Twitter creds
-consumer_key = "TWITTER_OATH_KEY"
-consumer_secret = "TWITTER_SECRET"
-access_token = "TWITTER_ACCESS_TOKEN"
-access_token_secret = "TWITTER_ACCESS_TOKEN_SECRET"
-
-# Access Twitter API
