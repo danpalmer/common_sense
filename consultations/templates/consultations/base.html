@@ -30,7 +30,12 @@
           </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-          <li><a href="{% url "accounts:profile" %}">{{ request.user.username }}</a></li>
+          {% if request.user.is_authenticated %}
+            <li><a href="{% url "accounts:profile" %}">{{ request.user.username }}</a></li>
+            <li><a href="{% url "account_logout" %}">Sign out with Twitter</a></li>
+          {% else %}
+            <li><a href="/accounts/twitter/login/?process=login">Sign in with Twitter</a></li>
+          {% endif %}
         </ul>
       </div>
     </nav>
