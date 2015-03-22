@@ -1,12 +1,12 @@
+import re
 import bs4
 import arrow
+import codecs
 import requests
 
-import codecs
+from os import makedirs, path
 from csv import DictWriter
 from optparse import make_option
-from os import devnull, makedirs, path
-import re
 from subprocess import call, DEVNULL, STDOUT
 from urllib.parse import urljoin
 
@@ -19,9 +19,15 @@ from consultations.enums import ConsultationStateEnum
 class Command(BaseCommand):
 
     option_list = BaseCommand.option_list + (
-        make_option('--get-documents', action='store_true', default=False,
-                    dest='get_documents', help='Get documents'),
-        )
+        make_option(
+            '--get-documents',
+            action='store_true',
+            default=False,
+            dest='get_documents',
+            help='Get documents',
+        ),
+    )
+
     session = requests.Session()
 
     def handle(self, *args, **options):
