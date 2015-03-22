@@ -1,11 +1,11 @@
 source('./tag_helpers.R')
 
-#db_url = Sys.getenv('DATABASE_URL')
-#db_conn = connect_to_db(db_url)
-db_conn = connect_to_sqlite("../db.sqlite3")
+db_url = Sys.getenv('DATABASE_URL')
+db_conn = connect_to_db(db_url)
+#db_conn = connect_to_sqlite("../db.sqlite3")
 query = "SELECT user_id, data FROM accounts_usertwitterdata"
-#results = dbFetch(dbSendQuery(db_conn, query), n = -1)
-results = dbGetQuery(db_conn, query)
+results = dbFetch(dbSendQuery(db_conn, query), n = -1)
+#results = dbGetQuery(db_conn, query)
 
 # Generate our TDM, convert to matrix
 doc.tdm = get.tdm(results$data)

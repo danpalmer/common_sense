@@ -1,11 +1,11 @@
 source('./tag_helpers.R')
 
-#db_url = Sys.getenv('DATABASE_URL')
-#db_conn = connect_to_db(db_url)
-db_conn = connect_to_sqlite("../db.sqlite3")
+db_url = Sys.getenv('DATABASE_URL')
+db_conn = connect_to_db(db_url)
+#db_conn = connect_to_sqlite("../db.sqlite3")
 query = "SELECT id, title, summary, organisation, raw_text FROM consultations_consultation"
-#results = dbFetch(dbSendQuery(db_conn, query), n = -1)
-results = dbGetQuery(db_conn, query)
+results = dbFetch(dbSendQuery(db_conn, query), n = -1)
+#results = dbGetQuery(db_conn, query)
 
 # Read in the data, concatenate all text fields into one; cleaning
 results$text = paste0(results$title, " ", results$summary, " ", results$organisation, " ", results$raw_text)
