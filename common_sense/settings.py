@@ -70,6 +70,9 @@ INSTALLED_APPS = (
     'accounts', # shadow allauth
     'allauth',
     'allauth.account',
+    'allauth.socialaccount',
+
+    'allauth.socialaccount.providers.twitter',
 
     'consultations',
 )
