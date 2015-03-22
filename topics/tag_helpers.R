@@ -1,5 +1,6 @@
 suppressPackageStartupMessages(require(httr))
 suppressPackageStartupMessages(require(RPostgreSQL))
+suppressPackageStartupMessages(require(RSQLite))
 suppressPackageStartupMessages(require(tm))
 
 connect_to_db = function(db_url) {
@@ -16,6 +17,12 @@ connect_to_db = function(db_url) {
         password = config$password,
         dbname = dbname
     )
+}
+
+connect_to_sqlite = function(DB_FILE) {
+    sqlite_driver = dbDriver("SQLite")
+    conn = dbConnect(sqlite_driver, DB_FILE)
+    return(conn)
 }
 
 # We'll need this later
