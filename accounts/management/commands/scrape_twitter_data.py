@@ -69,11 +69,7 @@ class Command(BaseCommand):
             text = ' '.join(visible_texts).replace('\n', '').replace('\t', '')
             raw_text = raw_text + ' ' + text
 
-
-        with open(twitter_handle + '.txt', 'w') as f:
-            f.write(raw_text)
-
-
+        user.twitter_data.create(data=raw_text)
 
 
 # Turns [[1, 2], [3]] into [1, 2, 3]
