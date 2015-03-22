@@ -188,7 +188,7 @@ class Command(BaseCommand):
                             content = self.session.get(document_url).content
                             with io.BytesIO(content) as pdf_file:
                                 document_raw_text += pdf_to_text(pdf_file)
-                        except ValueError:
+                        except Exception:
                             print("Invalid PDF")
 
                 pub['raw_text'] = document_raw_text
