@@ -50,8 +50,8 @@ class Topic(models.Model):
 
 
 class ConsultationTopic(models.Model):
-    topic = models.ForeignKey(Topic, related_name='consultations')
-    consultation = models.ForeignKey(Consultation, related_name='topics')
+    topic = models.ForeignKey(Topic, related_name='consultations', on_delete=models.CASCADE)
+    consultation = models.ForeignKey(Consultation, related_name='topics', on_delete=models.CASCADE)
 
     def __str__(self):
         return "{self.consultation.name}: {self.topic.name}".format(self=self)

@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
                 ('data', models.TextField(blank=True)),
-                ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL, related_name='twitter_data')),
+                ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL, related_name='twitter_data', on_delete=models.CASCADE)),
             ],
             options={
             },

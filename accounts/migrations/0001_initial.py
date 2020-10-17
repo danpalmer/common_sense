@@ -17,8 +17,8 @@ class Migration(migrations.Migration):
             name='UserTopic',
             fields=[
                 ('id', models.AutoField(serialize=False, verbose_name='ID', auto_created=True, primary_key=True)),
-                ('topic', models.ForeignKey(to='consultations.Topic', related_name='users')),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, related_name='topics')),
+                ('topic', models.ForeignKey(to='consultations.Topic', related_name='users', on_delete=models.CASCADE)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, related_name='topics', on_delete=models.CASCADE)),
             ],
             options={
             },

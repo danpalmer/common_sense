@@ -5,10 +5,10 @@ from consultations.models import Topic
 
 
 class UserTopic(models.Model):
-    user = models.ForeignKey(User, related_name='topics')
-    topic = models.ForeignKey(Topic, related_name='users')
+    user = models.ForeignKey(User, related_name='topics', on_delete=models.CASCADE)
+    topic = models.ForeignKey(Topic, related_name='users', on_delete=models.CASCADE)
 
 
 class UserTwitterData(models.Model):
-    user = models.OneToOneField(User, related_name='twitter_data')
+    user = models.OneToOneField(User, related_name='twitter_data', on_delete=models.CASCADE)
     data = models.TextField(blank=True)

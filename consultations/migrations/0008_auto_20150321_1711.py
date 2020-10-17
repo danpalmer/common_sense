@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
             name='ConsultationTopic',
             fields=[
                 ('id', models.AutoField(serialize=False, primary_key=True, verbose_name='ID', auto_created=True)),
-                ('consultation', models.ForeignKey(related_name='topics', to='consultations.Consultation')),
+                ('consultation', models.ForeignKey(related_name='topics', to='consultations.Consultation', on_delete=models.CASCADE)),
             ],
             options={
             },
@@ -34,7 +34,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='consultationtopic',
             name='topic',
-            field=models.ForeignKey(related_name='consultations', to='consultations.Topic'),
+            field=models.ForeignKey(related_name='consultations', to='consultations.Topic', on_delete=models.CASCADE),
             preserve_default=True,
         ),
     ]
