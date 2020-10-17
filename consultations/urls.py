@@ -1,11 +1,9 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 
 from . import views
 
-
-urlpatterns = patterns(
-    '',
-
+app_name= 'consultations'
+urlpatterns = [
     url(r'^$', views.HomePageView.as_view(), name='home'),
     url(
         r'^consultations$',
@@ -17,4 +15,4 @@ urlpatterns = patterns(
         views.ConsultationView.as_view(),
         name='view',
     )
-)
+]

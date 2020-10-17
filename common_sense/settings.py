@@ -26,26 +26,32 @@ else:
     SECRET_KEY = os.environ['SECRET_KEY']
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                # defaults
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
+                # Required by allauth template tags
+                'django.template.context_processors.request',
+            ],
+        }
+    },
+]
+
 TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = ['commonsense.herokuapp.com']
-
-
-TEMPLATE_CONTEXT_PROCESSORS = (
-    # defaults
-   'django.contrib.auth.context_processors.auth',
-   'django.core.context_processors.debug',
-   'django.core.context_processors.i18n',
-   'django.core.context_processors.media',
-   'django.core.context_processors.static',
-   'django.core.context_processors.tz',
-   'django.contrib.messages.context_processors.messages',
-    # Required by allauth template tags
-    'django.core.context_processors.request',
-    # allauth specific context processors
-    'allauth.account.context_processors.account',
-    'allauth.socialaccount.context_processors.socialaccount',
-)
 
 AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
@@ -77,12 +83,11 @@ INSTALLED_APPS = (
     'consultations',
 )
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -102,6 +107,7 @@ if not PRODUCTION:
             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         }
     }
+    ALLOWED_HOSTS.append('localhost')
 else:
     import dj_database_url
     DATABASES = {

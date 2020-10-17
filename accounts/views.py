@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.views import generic as views
 from django.contrib import messages
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from .forms import ProfileEditForm
 from .models import UserTopic
