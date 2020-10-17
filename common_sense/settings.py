@@ -51,7 +51,7 @@ TEMPLATES = [
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = ['commonsense.herokuapp.com']
+ALLOWED_HOSTS = [os.environ.get('HOST', 'commonsense.herokuapp.com')]
 
 AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
