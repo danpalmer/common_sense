@@ -1,13 +1,8 @@
-from django_enumfield import Enumeration, Item
+from django_enumfield import Enum, Item
 
 
-class ConsultationStateEnum(Enumeration):
-    OPEN = Item(10, 'open')
-    CLOSED = Item(20, 'closed')
-    OUTCOME = Item(30, 'outcome')
-
-    DISPLAY_TYPE_TO_ENUM_TYPE = {
-        'Open consultation': OPEN,
-        'Closed consultation': CLOSED,
-        'Consultation outcome': OUTCOME,
-    }
+ConsultationStateEnum = Enum('ConsultationStateEnum',
+    Item(10, 'open', 'Open consultation'),
+    Item(20, 'closed', 'Closed consultation'),
+    Item(30, 'outcome', 'Consultation outcome'),
+)
